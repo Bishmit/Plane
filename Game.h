@@ -33,6 +33,9 @@ public:
 
     void initEnemies();
 
-    void DecideCollision();
+    void RemoveEnemies();
+
+    //void RemoveBullets();
+
 
 };

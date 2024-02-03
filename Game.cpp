@@ -71,8 +71,10 @@ void Game::update() {
     for (auto& enemy : enemies) {
         enemy->update(); // each enemy got updated
     }
-    DecideCollision(); 
+    RemoveEnemies(); 
+   // RemoveBullets(); 
 }
+
 void Game::render() {
     window->clear();
     window->draw(bgsprite);
@@ -136,15 +138,55 @@ void Game::initEnemies() {
         enemies.push_back(newEnemy);
     }
 }
-void Game::DecideCollision() {
-    for (auto& b : bullets) {
-        for (auto& e : enemies) {
+
+void Game::RemoveEnemies() {
+    std::vector<int> enemiesToRemove; 
+
+    // Iterate over bullets
+    for (int i = 0; i < bullets.size(); i++) {
+        auto& b = bullets[i];
+
+        // Iterate over enemies
+        for (int j = 0; j < enemies.size(); j++) {
+            auto& e = enemies[j];
+
             if (b->getBounds().intersects(e->getBounds())) {
-                std::cout << "Collision Occurs" << "\n"; 
-                // post collision logic here
+                // Store index of enemy to remove
+                enemiesToRemove.push_back(j);
+                std::cout << "Collision Occurs" << "\n";
+                // post collision logic here 
             }
-       }
+        }
+    }
+
+    // Remove enemies outside the loop
+    for (int index : enemiesToRemove) {
+        delete enemies[index];
+        enemies.erase(enemies.begin() + index);
     }
 }
+
+/*
+*    for some reason this works but keeps on crashing 
+* 
+void Game::RemoveBullets() {
+    // Iterate over bullets in reverse order
+    for (int i = enemies.size() - 1; i >= 0; i--) {
+        for (int j = bullets.size() - 1; j >= 0; j--) {
+            if (enemies.at(i)->getBounds().intersects(bullets.at(j)->getBounds())) {
+                delete this->enemies[i];
+                this->enemies.erase(this->enemies.begin() + i);
+                delete this->bullets[j];
+                this->bullets.erase(this->bullets.begin() + j);
+            }
+        }
+    }
+}
+*/
+
+
+
+
+
 
 
