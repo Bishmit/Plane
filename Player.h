@@ -13,7 +13,7 @@ private:
 
 public:
 
-    Player(float x = 0.f, float y = 0.f);
+    Player(float x = 400.f, float y = 600.f);
     void update(const sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
     const sf::Vector2f& getPos() const;
