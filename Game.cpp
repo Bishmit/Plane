@@ -28,7 +28,7 @@ void Game::initVariable() {
 
 void Game::initWindow() {
     videomode = sf::VideoMode(800, 800);
-    window = new sf::RenderWindow(videomode, "Desert War", sf::Style::Close | sf::Style::Titlebar);
+    window = new sf::RenderWindow(videomode, "Plane", sf::Style::Close | sf::Style::Titlebar);
     backgroundtexture.loadFromFile("Desert.png"); 
     bgsprite.setTexture(backgroundtexture); 
     this->window->setFramerateLimit(60);
