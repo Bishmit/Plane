@@ -68,11 +68,9 @@ void Game::update() {
     player.update(this->window);
     spawnBullets();
     updateBullets();
-    for (auto& enemy : enemies) {
-        enemy->update(); // each enemy got updated
-    }
-    RemoveEnemies(); 
-   // RemoveBullets(); 
+    deletingenemies(); 
+    //RemoveEnemies(); 
+    RemoveBullets(); 
 }
 
 void Game::render() {
@@ -100,7 +98,7 @@ void Game::spawnBullets() {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && canShoot) {
         // Create a new bullet and add it to the bullets vector
         this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
-        this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 35.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
+        //this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 35.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
 
         // Start the cooldown timer
         cooldownClock.restart();
@@ -125,17 +123,35 @@ void Game::updateBullets() {
             delete this->bullets[index];
             this->bullets.erase(this->bullets.begin() + index);
             --index;
-            std::cout << this->bullets.size() << "\n";
+           // std::cout << this->bullets.size() << "\n";
         }
         ++index;
     }
 }
 
 void Game::initEnemies() {
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < 100; ++i) {
         Enemy* newEnemy = new Enemy(); 
         newEnemy->setPosition(sf::Vector2f(rand() % 800, -100 - i * 50)); // Random position
         enemies.push_back(newEnemy);
+    }
+
+}
+
+void Game::deletingenemies() {
+    // deleting the enemies once if they goes outside the bounds
+    for (auto* enemy : enemies) {
+        enemy->update(); // each enemy got updated
+    }
+    unsigned index = 0;
+    for (auto* e : enemies) {
+        if (e->getBounds().top + e->getBounds().height >600.f) {
+            delete this->enemies[index];
+            this->enemies.erase(this->enemies.begin() + index);
+            --index;
+            std::cout << this->enemies.size() << "\n";
+        }
+        ++index;
     }
 }
 
@@ -166,11 +182,16 @@ void Game::RemoveEnemies() {
     }
 }
 
-/*
-*    for some reason this works but keeps on crashing 
-* 
+
 void Game::RemoveBullets() {
     // Iterate over bullets in reverse order
+    for (auto* bullet : bullets) {
+        bullet->update(window); // each enemy got updated
+    }
+
+    for (auto* enemy : enemies) {
+        enemy->update(); // each enemy got updated
+    }
     for (int i = enemies.size() - 1; i >= 0; i--) {
         for (int j = bullets.size() - 1; j >= 0; j--) {
             if (enemies.at(i)->getBounds().intersects(bullets.at(j)->getBounds())) {
@@ -182,7 +203,7 @@ void Game::RemoveBullets() {
         }
     }
 }
-*/
+
 
 
 

@@ -33,9 +33,11 @@ public:
 
     void initEnemies();
 
+    void deletingenemies();
+
     void RemoveEnemies();
 
-    //void RemoveBullets();
+    void RemoveBullets();
 
 
 };
