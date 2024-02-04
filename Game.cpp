@@ -69,7 +69,6 @@ void Game::update() {
     spawnBullets();
     updateBullets();
     deletingenemies(); 
-    //RemoveEnemies(); 
     RemoveBullets(); 
 }
 
@@ -145,7 +144,7 @@ void Game::deletingenemies() {
     }
     unsigned index = 0;
     for (auto* e : enemies) {
-        if (e->getBounds().top + e->getBounds().height >600.f) {
+        if (e->getBounds().top + e->getBounds().height >800.f) {
             delete this->enemies[index];
             this->enemies.erase(this->enemies.begin() + index);
             --index;
@@ -155,35 +154,8 @@ void Game::deletingenemies() {
     }
 }
 
-void Game::RemoveEnemies() {
-    std::vector<int> enemiesToRemove; 
 
-    // Iterate over bullets
-    for (int i = 0; i < bullets.size(); i++) {
-        auto& b = bullets[i];
-
-        // Iterate over enemies
-        for (int j = 0; j < enemies.size(); j++) {
-            auto& e = enemies[j];
-
-            if (b->getBounds().intersects(e->getBounds())) {
-                // Store index of enemy to remove
-                enemiesToRemove.push_back(j);
-                std::cout << "Collision Occurs" << "\n";
-                // post collision logic here 
-            }
-        }
-    }
-
-    // Remove enemies outside the loop
-    for (int index : enemiesToRemove) {
-        delete enemies[index];
-        enemies.erase(enemies.begin() + index);
-    }
-}
-
-
-void Game::RemoveBullets() {
+void Game::RemoveBullets() { // this remove both bullet and enemies
     // Iterate over bullets in reverse order
     for (auto* bullet : bullets) {
         bullet->update(window); // each enemy got updated
