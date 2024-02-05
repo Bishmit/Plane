@@ -128,16 +128,22 @@ void Game::updateBullets() {
     }
 }
 
-void Game::initEnemies() {
-    for (int i = 0; i < 100; ++i) {
-        Enemy* newEnemy = new Enemy(); 
-        newEnemy->setPosition(sf::Vector2f(rand() % 800, -100 - i * 50)); // Random position
-        enemies.push_back(newEnemy);
-    }
-
+void Game::initEnemies()
+{
+    this->spawnTimerMax = 50.f;
+    this->spawnTimer = this->spawnTimerMax;
 }
 
 void Game::deletingenemies() {
+    //first creating enemies
+    this->spawnTimer += 0.5f;
+    if (this->spawnTimer >= this->spawnTimerMax)
+    {
+        Enemy* newEnemy = new Enemy();
+        newEnemy->setPosition(sf::Vector2f(rand() % 700, -100));
+        enemies.push_back(newEnemy);
+        this->spawnTimer = 0.f;
+    }
     // deleting the enemies once if they goes outside the bounds
     for (auto* enemy : enemies) {
         enemy->update(); // each enemy got updated
@@ -155,26 +161,23 @@ void Game::deletingenemies() {
 }
 
 
-void Game::RemoveBullets() { // this remove both bullet and enemies
-    // Iterate over bullets in reverse order
-    for (auto* bullet : bullets) {
-        bullet->update(window); // each enemy got updated
-    }
-
-    for (auto* enemy : enemies) {
-        enemy->update(); // each enemy got updated
-    }
-    for (int i = enemies.size() - 1; i >= 0; i--) {
-        for (int j = bullets.size() - 1; j >= 0; j--) {
-            if (enemies.at(i)->getBounds().intersects(bullets.at(j)->getBounds())) {
-                delete this->enemies[i];
-                this->enemies.erase(this->enemies.begin() + i);
-                delete this->bullets[j];
-                this->bullets.erase(this->bullets.begin() + j);
+void Game::RemoveBullets() {
+    // Iterate over bullets and enemies
+    for (int i = 0; i < enemies.size(); i++) {
+        for (int j = 0; j < bullets.size(); j++) {
+            if (enemies[i]->getBounds().intersects(bullets[j]->getBounds())) {
+                // If there's an intersection, remove both the bullet and the enemy
+                delete enemies[i];
+                enemies.erase(enemies.begin() + i);
+                delete bullets[j];
+                bullets.erase(bullets.begin() + j);
+                i--;
+                break; 
             }
         }
     }
 }
+
 
 
 

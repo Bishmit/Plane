@@ -15,6 +15,8 @@ private:
     std::map<std::string, sf::Texture*> textures;
     std::vector<Bullet*> bullets;
     std::vector<Enemy*> enemies; 
+    float spawnTimer;
+    float spawnTimerMax;
     Player player;
     void initVariable();
     void initWindow();
