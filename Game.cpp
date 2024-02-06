@@ -3,6 +3,7 @@
 Game::Game() {
     initVariable();
     initTexture();
+    initEnemiesTexture(); 
     initWindow();
     initEnemies();
     initfont(); 
@@ -11,8 +12,13 @@ Game::Game() {
 Game::~Game() {
     delete window;
 
-    // deleting textures
+    // deleting bullet textures
     for (auto& i : this->textures) {
+        delete i.second; // seleting the texture part from the map and deleting it
+    }
+
+    // deleting enemy textures
+    for (auto& i : this->EnemyTextures) {
         delete i.second; // seleting the texture part from the map and deleting it
     }
 
@@ -42,8 +48,16 @@ void Game::initWindow() {
 
 void Game::initTexture()
 {
+    // give texture for bullets 
     this->textures["BULLET"] = new sf::Texture();
     this->textures["BULLET"]->loadFromFile("Bullet.png");
+
+}
+
+void Game::initEnemiesTexture() {
+    //gives texture for the enemy 
+    this->EnemyTextures["ENEMY"] = new sf::Texture();
+    this->EnemyTextures["ENEMY"]->loadFromFile("enemy.png");
 }
 
 const bool Game::running() const {
@@ -142,7 +156,7 @@ void Game::deletingenemies() {
     this->spawnTimer += 0.5f;
     if (this->spawnTimer >= this->spawnTimerMax)
     {
-        Enemy* newEnemy = new Enemy();
+        Enemy* newEnemy = new Enemy( this->EnemyTextures["ENEMY"]);
         newEnemy->setPosition(sf::Vector2f(rand() % 700, -100));
         enemies.push_back(newEnemy);
         this->spawnTimer = 0.f;

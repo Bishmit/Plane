@@ -13,6 +13,7 @@ private:
     sf::VideoMode videomode;
     sf::Event event;
     std::map<std::string, sf::Texture*> textures;
+    std::map<std::string, sf::Texture*> EnemyTextures;
     std::vector<Bullet*> bullets;
     std::vector<Enemy*> enemies; 
     sf::Font font; 
@@ -24,6 +25,7 @@ private:
     void initVariable();
     void initWindow();
     void initTexture();
+    void initEnemiesTexture();
     void pollEvents();
     void initEnemies();
     void initfont();

@@ -1,10 +1,8 @@
 #include "Enemy.h"
 
-Enemy::Enemy() {
-    if (!texture.loadFromFile("enemy.png")) {
-        // Handle error
-    }
-    enemy.setTexture(texture);
+Enemy::Enemy(sf::Texture *enemyTexture) {
+    
+    enemy.setTexture(*enemyTexture);
     enemy.setScale(sf::Vector2f(0.5f, 0.5f));
 }
 

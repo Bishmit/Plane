@@ -3,13 +3,12 @@
 #include"globals.h"
 class Enemy {
 private:
-    sf::Texture texture;
     sf::Sprite enemy;
     void initVariables();
     void initShape();
 
 public:
-    Enemy();
+    Enemy(sf::Texture *enemyTexture);
     ~Enemy();
     void update();
     void render(sf::RenderWindow* window); 
