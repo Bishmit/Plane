@@ -3,7 +3,7 @@
 Enemy::Enemy(sf::Texture *enemyTexture) {
     
     enemy.setTexture(*enemyTexture);
-    enemy.setScale(sf::Vector2f(0.3f, 0.3f));
+    enemy.setScale(sf::Vector2f(1.f, 1.f));
 }
 
 Enemy::~Enemy() {

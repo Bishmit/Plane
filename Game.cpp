@@ -68,12 +68,6 @@ void Game::initEnemiesTexture() {
     this->EnemyTextures[3] = new sf::Texture();
     this->EnemyTextures[3]->loadFromFile("Enemy/Enemy4.png");
 
-    this->EnemyTextures[4] = new sf::Texture();
-    this->EnemyTextures[4]->loadFromFile("Enemy/Enemy5.png");
-
-    this->EnemyTextures[5] = new sf::Texture();
-    this->EnemyTextures[5]->loadFromFile("Enemy/Enemy6.png");
-
 }
 
 const bool Game::running() const {
@@ -129,7 +123,7 @@ void Game::spawnBullets() {
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && canShoot) {
         // Create a new bullet and add it to the bullets vector
-        this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
+        this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 16.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
         //this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 35.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
 
         // Start the cooldown timer
