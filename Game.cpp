@@ -56,8 +56,24 @@ void Game::initTexture()
 
 void Game::initEnemiesTexture() {
     //gives texture for the enemy 
-    this->EnemyTextures["ENEMY"] = new sf::Texture();
-    this->EnemyTextures["ENEMY"]->loadFromFile("enemy.png");
+    this->EnemyTextures[0] = new sf::Texture();
+    this->EnemyTextures[0]->loadFromFile("Enemy/Enemy1.png");
+
+    this->EnemyTextures[1] = new sf::Texture();
+    this->EnemyTextures[1]->loadFromFile("Enemy/Enemy2.png");
+
+    this->EnemyTextures[2] = new sf::Texture();
+    this->EnemyTextures[2]->loadFromFile("Enemy/Enemy3.png");
+
+    this->EnemyTextures[3] = new sf::Texture();
+    this->EnemyTextures[3]->loadFromFile("Enemy/Enemy4.png");
+
+    this->EnemyTextures[4] = new sf::Texture();
+    this->EnemyTextures[4]->loadFromFile("Enemy/Enemy5.png");
+
+    this->EnemyTextures[5] = new sf::Texture();
+    this->EnemyTextures[5]->loadFromFile("Enemy/Enemy6.png");
+
 }
 
 const bool Game::running() const {
@@ -152,11 +168,13 @@ void Game::initEnemies()
 }
 
 void Game::deletingenemies() {
+    //first lets create random enemy shits 
+    int randomIndex = rand()% EnemyTextures.size(); 
     //first creating enemies
     this->spawnTimer += 0.5f;
     if (this->spawnTimer >= this->spawnTimerMax)
     {
-        Enemy* newEnemy = new Enemy( this->EnemyTextures["ENEMY"]);
+        Enemy* newEnemy = new Enemy( this->EnemyTextures[randomIndex]);
         newEnemy->setPosition(sf::Vector2f(rand() % 700, -100));
         enemies.push_back(newEnemy);
         this->spawnTimer = 0.f;
