@@ -5,6 +5,7 @@ Game::Game() {
     initTexture();
     initWindow();
     initEnemies();
+    initfont(); 
 }
 
 Game::~Game() {
@@ -28,6 +29,7 @@ Game::~Game() {
 
 void Game::initVariable() {
     endgame = false;
+    this->score = score; 
 }
 
 void Game::initWindow() {
@@ -84,6 +86,7 @@ void Game::render() {
     for (auto& enemy : enemies) {
         enemy->render(this->window);
     }
+    window->draw(text); 
     window->display();
 }
 
@@ -167,6 +170,9 @@ void Game::RemoveBullets() {
         for (int j = 0; j < bullets.size(); j++) {
             if (enemies[i]->getBounds().intersects(bullets[j]->getBounds())) {
                 // If there's an intersection, remove both the bullet and the enemy
+                this->score++; 
+                std::cout << score << "\n"; 
+                text.setString("Score: " + std::to_string(this->score));
                 delete enemies[i];
                 enemies.erase(enemies.begin() + i);
                 delete bullets[j];
@@ -178,7 +184,16 @@ void Game::RemoveBullets() {
     }
 }
 
-
+void Game::initfont() {
+    if (!font.loadFromFile("Font/PixellettersFull.ttf")) {
+        std::cout << "Error: Couldn't load the font file" << std::endl;
+    }
+    text.setFont(font);
+    text.setString("Score: " + std::to_string(this->score));
+    text.setPosition(610.f,5.f);
+    text.setCharacterSize(40);
+    text.setFillColor(sf::Color::White);
+}
 
 
 
