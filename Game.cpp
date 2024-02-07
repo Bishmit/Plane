@@ -4,6 +4,7 @@ Game::Game() {
     initVariable();
     initTexture();
     initEnemiesTexture(); 
+    initEnemyBulletTexture(); 
     initWindow();
     initEnemies();
     initfont(); 
@@ -12,8 +13,13 @@ Game::Game() {
 Game::~Game() {
     delete window;
 
-    // deleting bullet textures
+    // deleting bullet textures of player
     for (auto& i : this->textures) {
+        delete i.second; // seleting the texture part from the map and deleting it
+    }
+
+    // deleting bullet textures of enemies
+    for (auto& i : this->EnemyBulletTexture) {
         delete i.second; // seleting the texture part from the map and deleting it
     }
 
@@ -22,8 +28,13 @@ Game::~Game() {
         delete i.second; // seleting the texture part from the map and deleting it
     }
 
-    // deleting the bullets 
+    // deleting the bullets from vector
     for (auto* i : this->bullets) {
+        delete i;
+    }
+
+    // deleting the enemy bullets from vector
+    for (auto* i : this->Enemybullets) {
         delete i;
     }
 
@@ -51,6 +62,14 @@ void Game::initTexture()
     // give texture for bullets 
     this->textures["BULLET"] = new sf::Texture();
     this->textures["BULLET"]->loadFromFile("Bullet.png");
+
+}
+
+void Game::initEnemyBulletTexture()
+{
+    // give texture for Enemy bullets 
+    this->EnemyBulletTexture["ENEMYBULLET"] = new sf::Texture();
+    this->EnemyBulletTexture["ENEMYBULLET"]->loadFromFile("ReverseBullet.png");
 
 }
 
@@ -94,6 +113,8 @@ void Game::update() {
     player.update(this->window);
     spawnBullets();
     updateBullets();
+    spawnEnemiesBullet(); 
+    updateEnemyBullets(); 
     deletingenemies(); 
     RemoveBullets(); 
 }
@@ -109,6 +130,10 @@ void Game::render() {
     // rendering the enemies 
     for (auto& enemy : enemies) {
         enemy->render(this->window);
+    }
+    // rendering the enemies bullet
+    for (auto* enemybullet :this->Enemybullets) {
+        enemybullet->render(this->window);
     }
     window->draw(text); 
     window->display();
@@ -137,6 +162,37 @@ void Game::spawnBullets() {
     }
 }
 
+void Game::spawnEnemiesBullet() {
+    const sf::Time CooldownTime = sf::milliseconds(1000);
+
+    static sf::Clock cooldownClock;
+    static bool canShoot = true;
+
+    // Check if the cooldown time has elapsed and reset the canShoot flag
+    if (!canShoot && cooldownClock.getElapsedTime() >= CooldownTime) {
+        canShoot = true;
+    }
+
+    if (this->score >= 1 && canShoot) {
+        for (auto* enemy : enemies) {
+            // random enemy will shoot the bullet
+            int randomNumber = rand() % 100;
+            if (randomNumber<20) {
+                EnemyBullet* enemyBullet = new EnemyBullet(
+                    this->EnemyBulletTexture["ENEMYBULLET"],
+                    enemy->getPos().x + 16.f,
+                    enemy->getPos().y,
+                    0.f, 2.f, 5.f, 2.f, 2.f
+                );
+                this->Enemybullets.push_back(enemyBullet);
+            }
+            // Start the cooldown timer
+            cooldownClock.restart();
+            canShoot = false;
+        }
+    }
+}
+
 
 void Game::updateBullets() {
     unsigned index = 0;
@@ -148,8 +204,25 @@ void Game::updateBullets() {
             // deleting the bullets
             delete this->bullets[index];
             this->bullets.erase(this->bullets.begin() + index);
+            --index; 
+        }
+        ++index;
+    }
+}
+
+void Game::updateEnemyBullets() {
+    unsigned index = 0;
+    for (auto* enemybullet : this->Enemybullets) {
+        enemybullet->update(this->window);
+
+        // deleting the bullets if it goes out of the bound
+        if (enemybullet->getBounds().top + enemybullet->getBounds().height > 800.f) {
+            // deleting the bullets
+            delete this->Enemybullets[index];
+            this->Enemybullets.erase(this->Enemybullets.begin() + index);
             --index;
-           // std::cout << this->bullets.size() << "\n";
+            std::cout << "yeha samma chalexa hai" << "\n"; 
+             //std::cout << this->Enemybullets.size() << "\n";
         }
         ++index;
     }

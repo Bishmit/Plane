@@ -14,6 +14,7 @@ public:
     void render(sf::RenderWindow* window); 
     const sf::FloatRect getBounds() const;
     void setPosition(const sf::Vector2f& position);
+    const sf::Vector2f& getPos() const;
 };
 
 

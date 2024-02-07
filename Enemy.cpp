@@ -29,3 +29,8 @@ const sf::FloatRect Enemy::getBounds() const {
 void Enemy::setPosition(const sf::Vector2f& position) {
     enemy.setPosition(position); // Set the position of the sprite
 }
+
+const sf::Vector2f& Enemy::getPos() const
+{
+    return enemy.getPosition(); 
+}
