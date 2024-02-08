@@ -63,3 +63,9 @@ const sf::Vector2f& Player::getPos() const
 {
     return this->sprite.getPosition();
 }
+
+const sf::FloatRect Player::getbounds() const
+{
+    return sprite.getGlobalBounds(); 
+}
+

@@ -8,6 +8,7 @@ Game::Game() {
     initWindow();
     initEnemies();
     initfont(); 
+    makeHealthBar(); 
 }
 
 Game::~Game() {
@@ -46,7 +47,7 @@ Game::~Game() {
 
 void Game::initVariable() {
     endgame = false;
-    this->score = score; 
+    this->score = 0; 
 }
 
 void Game::initWindow() {
@@ -109,7 +110,6 @@ void Game::pollEvents() {
 }
 
 void Game::update() {
-    pollEvents();
     player.update(this->window);
     spawnBullets();
     updateBullets();
@@ -117,6 +117,8 @@ void Game::update() {
     updateEnemyBullets(); 
     deletingenemies(); 
     RemoveBullets(); 
+    makeEnemyTouchPlayer(); 
+    makeEnemyBulletTouchPlayer(); 
 }
 
 void Game::render() {
@@ -135,6 +137,7 @@ void Game::render() {
     for (auto* enemybullet :this->Enemybullets) {
         enemybullet->render(this->window);
     }
+    window->draw(healthbar); 
     window->draw(text); 
     window->display();
 }
@@ -146,7 +149,7 @@ void Game::spawnBullets() {
     static sf::Clock cooldownClock;
     static bool canShoot = true;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && canShoot) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && canShoot) {
         // Create a new bullet and add it to the bullets vector
         this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 16.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
         //this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 35.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
@@ -173,7 +176,7 @@ void Game::spawnEnemiesBullet() {
         canShoot = true;
     }
 
-    if (this->score >= 1 && canShoot) {
+    if (this->score >= 10 && canShoot) {
         for (auto* enemy : enemies) {
             // random enemy will shoot the bullet
             int randomNumber = rand() % 100;
@@ -204,7 +207,6 @@ void Game::updateBullets() {
             // deleting the bullets
             delete this->bullets[index];
             this->bullets.erase(this->bullets.begin() + index);
-            --index; 
         }
         ++index;
     }
@@ -220,9 +222,6 @@ void Game::updateEnemyBullets() {
             // deleting the bullets
             delete this->Enemybullets[index];
             this->Enemybullets.erase(this->Enemybullets.begin() + index);
-            --index;
-            std::cout << "yeha samma chalexa hai" << "\n"; 
-             //std::cout << this->Enemybullets.size() << "\n";
         }
         ++index;
     }
@@ -292,6 +291,52 @@ void Game::initfont() {
     text.setPosition(610.f,5.f);
     text.setCharacterSize(40);
     text.setFillColor(sf::Color::White);
+}
+
+void Game::makeEnemyTouchPlayer() {
+    // player enemy collision
+    for (int i = 0; i < enemies.size(); i++) {
+        if (enemies[i]->getBounds().intersects(player.getbounds())) {
+            // call the health bar decreasing function here
+            DecreaseHp(30.f); 
+           // std::cout << "enemy touches player" << "\n"; 
+            delete enemies[i]; 
+            enemies.erase(enemies.begin() + i);
+            break; 
+        }
+    }
+}
+
+void Game::makeEnemyBulletTouchPlayer() {
+    // player enemy collision
+    for (int i = 0; i < Enemybullets.size(); i++) {
+        if (Enemybullets[i]->getBounds().intersects(player.getbounds())) {
+            // call the health bar decreasing function here
+            DecreaseHp(10.f);
+           // std::cout << "enemy touches player" << "\n"; 
+            delete Enemybullets[i];
+            Enemybullets.erase(Enemybullets.begin() + i);
+            break;
+        }
+    }
+}
+
+void Game::makeHealthBar() {
+    // making health bar type thing in window which decreases the health as the player touches enemy bullets or enemy 
+    healthbar.setPosition(10.f, 10.f); 
+    healthbar.setFillColor(sf::Color::Red); 
+    healthbar.setSize(sf::Vector2f(150.f, 15.f)); 
+}
+
+void Game::DecreaseHp(float number) {
+    // decreasing the hp 
+        newhp.x = healthbar.getSize().x - number;
+        newhp.y = healthbar.getSize().y;
+        if (newhp.x <= 0.0f) {
+            newhp.x = 0.0f;
+            std::cout << "Gameover" << "\n"; 
+        }
+        healthbar.setSize(sf::Vector2f(newhp.x, newhp.y));
 }
 
 

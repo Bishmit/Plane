@@ -17,4 +17,5 @@ public:
     void update(const sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
     const sf::Vector2f& getPos() const;
+    const sf::FloatRect getbounds() const; 
 }; 

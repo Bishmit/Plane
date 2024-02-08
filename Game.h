@@ -9,6 +9,8 @@
 #include <ctime>   
 class Game {
 private:
+    sf::Vector2f newhp; 
+    sf::RectangleShape healthbar; 
     sf::Texture backgroundtexture;
     sf::Sprite bgsprite;
     float endgame;
@@ -23,7 +25,7 @@ private:
     std::vector<EnemyBullet*> Enemybullets;
     sf::Font font; 
     sf::Text text; 
-    int score = 0; 
+    int score; 
     float spawnTimer;
     float spawnTimerMax;
     Player player;
@@ -32,15 +34,23 @@ private:
     void initTexture();
     void initEnemyBulletTexture();
     void initEnemiesTexture();
-    void pollEvents();
     void initEnemies();
     void initfont();
+
+    void makeEnemyTouchPlayer();
+
+    void makeEnemyBulletTouchPlayer();
+
+    void makeHealthBar();
+
+    void DecreaseHp(float);
 
 public:
     Game();
     ~Game();
 
     const bool running() const;
+    void pollEvents();
     void update();
     void render();
     void spawnBullets();
@@ -54,8 +64,5 @@ public:
     void deletingenemies();
 
     void RemoveBullets();
-
-   
-
 
 };
