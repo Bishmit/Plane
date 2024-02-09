@@ -7,6 +7,8 @@ Game::Game() {
     initEnemyBulletTexture(); 
     initWindow();
     initEnemies();
+    initPoweupEntities(); 
+    inithealthbarentities();
     initfont(); 
     makeHealthBar(); 
 }
@@ -29,6 +31,11 @@ Game::~Game() {
         delete i.second; // seleting the texture part from the map and deleting it
     }
 
+    // deleting powerup textures
+    for (auto& i : this->PowerupTextures) {
+        delete i.second; // seleting the texture part from the map and deleting it
+    }
+
     // deleting the bullets from vector
     for (auto* i : this->bullets) {
         delete i;
@@ -43,12 +50,18 @@ Game::~Game() {
     for (auto& enemy : enemies) {
         delete enemy;
     }
+
+    // deleting all powerup shit 
+    for (auto& hp : Powerupvector) {
+        delete hp;
+    }
 }
 
 void Game::initVariable() {
     endgame = false;
     this->score = 0; 
 }
+
 
 void Game::initWindow() {
     videomode = sf::VideoMode(800, 800);
@@ -88,6 +101,20 @@ void Game::initEnemiesTexture() {
     this->EnemyTextures[3] = new sf::Texture();
     this->EnemyTextures[3]->loadFromFile("Enemy/Enemy4.png");
 
+    this->EnemyTextures[4] = new sf::Texture();
+    this->EnemyTextures[4]->loadFromFile("Enemy/Enemy5.png");
+
+    this->EnemyTextures[5] = new sf::Texture();
+    this->EnemyTextures[5]->loadFromFile("Enemy/Enemy6.png");
+
+}
+
+void Game::inithealthbarentities() {
+    this->PowerupTextures[0] = new sf::Texture(); 
+    this->PowerupTextures[0]->loadFromFile("PowerUpEntity/hpSupply.png"); 
+
+    this->PowerupTextures[1] = new sf::Texture();
+    this->PowerupTextures[1]->loadFromFile("PowerUpEntity/hpSupply2.png");
 }
 
 const bool Game::running() const {
@@ -117,8 +144,10 @@ void Game::update() {
     updateEnemyBullets(); 
     deletingenemies(); 
     RemoveBullets(); 
+    SpawnAndDeletePowerup(); 
     makeEnemyTouchPlayer(); 
     makeEnemyBulletTouchPlayer(); 
+    makePowerupTouchPlayer(); 
 }
 
 void Game::render() {
@@ -137,6 +166,10 @@ void Game::render() {
     for (auto* enemybullet :this->Enemybullets) {
         enemybullet->render(this->window);
     }
+    // redering the powerup in the screen
+    for (auto* hpbarshit : this->Powerupvector) {
+        hpbarshit->render(this->window); 
+    }
     window->draw(healthbar); 
     window->draw(text); 
     window->display();
@@ -153,7 +186,6 @@ void Game::spawnBullets() {
         // Create a new bullet and add it to the bullets vector
         this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 16.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
         //this->bullets.push_back(new Bullet(this->textures["BULLET"], player.getPos().x + 35.f, player.getPos().y, 0.f, -2.f, 5.f, 2.f, 2.f));
-
         // Start the cooldown timer
         cooldownClock.restart();
         canShoot = false;
@@ -233,6 +265,12 @@ void Game::initEnemies()
     this->spawnTimer = this->spawnTimerMax;
 }
 
+void Game::initPoweupEntities()
+{
+    this->spawnTimerMaxHP = 50.f;
+    this->spawnTimerHP = this->spawnTimerMaxHP;
+}
+
 void Game::deletingenemies() {
     //first lets create random enemy shits 
     int randomIndex = rand()% EnemyTextures.size(); 
@@ -255,7 +293,7 @@ void Game::deletingenemies() {
             delete this->enemies[index];
             this->enemies.erase(this->enemies.begin() + index);
             --index;
-            std::cout << this->enemies.size() << "\n";
+           // std::cout << this->enemies.size() << "\n";
         }
         ++index;
     }
@@ -282,6 +320,46 @@ void Game::RemoveBullets() {
     }
 }
 
+void Game::SpawnAndDeletePowerup() {
+    int randomIndex = rand() % PowerupTextures.size();
+    this->spawnTimerHP += 0.5f/40;
+    if (this->spawnTimerHP >= this->spawnTimerMaxHP)
+    {
+        Powerup* newhp = new Powerup(this->PowerupTextures[randomIndex]);
+        newhp->setPosition(sf::Vector2f(rand() % 700, -100));
+        Powerupvector.push_back(newhp);
+        this->spawnTimerHP = 0.f;
+    }
+
+    for (auto* healthentity : Powerupvector) {
+        healthentity->update(); 
+    }
+    unsigned index = 0;
+    for (auto* hp : Powerupvector) {
+        if (hp->getBounds().top + hp->getBounds().height > 800.f) {
+            delete this->Powerupvector[index];
+            this->Powerupvector.erase(this->Powerupvector.begin() + index);
+            --index;
+            std::cout << "chalexa" << "\n";
+        }
+        ++index;
+    }
+}
+
+void Game::makePowerupTouchPlayer() {
+    // player enemy collision
+    for (int i = 0; i < Powerupvector.size(); i++) {
+        if (Powerupvector[i]->getBounds().intersects(player.getbounds())) {
+            // call the health bar decreasing function here
+            increaseHp(20.f);
+            // std::cout << "enemy touches player" << "\n"; 
+            delete Powerupvector[i];
+            Powerupvector.erase(Powerupvector.begin() + i);
+            break;
+        }
+    }
+}
+
 void Game::initfont() {
     if (!font.loadFromFile("Font/PixellettersFull.ttf")) {
         std::cout << "Error: Couldn't load the font file" << std::endl;
@@ -292,6 +370,7 @@ void Game::initfont() {
     text.setCharacterSize(40);
     text.setFillColor(sf::Color::White);
 }
+
 
 void Game::makeEnemyTouchPlayer() {
     // player enemy collision
@@ -312,7 +391,7 @@ void Game::makeEnemyBulletTouchPlayer() {
     for (int i = 0; i < Enemybullets.size(); i++) {
         if (Enemybullets[i]->getBounds().intersects(player.getbounds())) {
             // call the health bar decreasing function here
-            DecreaseHp(10.f);
+            DecreaseHp(20.f);
            // std::cout << "enemy touches player" << "\n"; 
             delete Enemybullets[i];
             Enemybullets.erase(Enemybullets.begin() + i);
@@ -337,6 +416,16 @@ void Game::DecreaseHp(float number) {
             std::cout << "Gameover" << "\n"; 
         }
         healthbar.setSize(sf::Vector2f(newhp.x, newhp.y));
+}
+
+void Game::increaseHp(float number) {
+    // decreasing the hp 
+    newhp.x = healthbar.getSize().x + number;
+    newhp.y = healthbar.getSize().y;
+    if (newhp.x >= 150.0f) {
+        newhp.x = 150.0f;
+    }
+    healthbar.setSize(sf::Vector2f(newhp.x, newhp.y));
 }
 
 

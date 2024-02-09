@@ -13,7 +13,7 @@ Enemy::~Enemy() {
 void Enemy::update() {
     // Update enemy behavior
     sf::Vector2f position = enemy.getPosition();
-    position.y += 1.0f; // Adjust the speed of movement
+    position.y += 1.5f; // Adjust the speed of movement
     enemy.setPosition(position);
 }
 

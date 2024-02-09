@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include"EnemyBullet.h"
+#include "Powerup.h"
 #include <cstdlib> 
 #include <ctime>   
 class Game {
@@ -20,22 +21,32 @@ private:
     std::map<std::string, sf::Texture*> textures;  //player bullet texture 
     std::map<std::string, sf::Texture*> EnemyBulletTexture;  //enemy bullet texture 
     std::map<int, sf::Texture*> EnemyTextures; 
+    std::map<int, sf::Texture*> PowerupTextures;
     std::vector<Bullet*> bullets;
     std::vector<Enemy*> enemies; 
     std::vector<EnemyBullet*> Enemybullets;
+    std::vector<Powerup*> Powerupvector;
     sf::Font font; 
     sf::Text text; 
     int score; 
     float spawnTimer;
     float spawnTimerMax;
+
+    // for powerup entities
+    float spawnTimerHP; 
+    float spawnTimerMaxHP; 
+
     Player player;
     void initVariable();
     void initWindow();
     void initTexture();
     void initEnemyBulletTexture();
     void initEnemiesTexture();
+    void inithealthbarentities(); 
     void initEnemies();
+    void initPoweupEntities();
     void initfont();
+    //void initSound(); 
 
     void makeEnemyTouchPlayer();
 
@@ -44,6 +55,7 @@ private:
     void makeHealthBar();
 
     void DecreaseHp(float);
+    void increaseHp(float);
 
 public:
     Game();
@@ -64,5 +76,7 @@ public:
     void deletingenemies();
 
     void RemoveBullets();
+    void SpawnAndDeletePowerup(); 
+    void makePowerupTouchPlayer();
 
 };

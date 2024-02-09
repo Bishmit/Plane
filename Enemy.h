@@ -4,8 +4,6 @@
 class Enemy {
 private:
     sf::Sprite enemy;
-    void initVariables();
-    void initShape();
 
 public:
     Enemy(sf::Texture *enemyTexture);
