@@ -11,6 +11,7 @@ Game::Game() {
     inithealthbarentities();
     initfont(); 
     makeHealthBar(); 
+    initspecialenemy();
 }
 
 Game::~Game() {
@@ -136,7 +137,7 @@ void Game::pollEvents() {
     }
 }
 
-void Game::update() {
+void Game::Update() {
     player.update(this->window);
     spawnBullets();
     updateBullets();
@@ -148,6 +149,7 @@ void Game::update() {
     makeEnemyTouchPlayer(); 
     makeEnemyBulletTouchPlayer(); 
     makePowerupTouchPlayer(); 
+    updatespecialenemy(); 
 }
 
 void Game::render() {
@@ -169,6 +171,9 @@ void Game::render() {
     // redering the powerup in the screen
     for (auto* hpbarshit : this->Powerupvector) {
         hpbarshit->render(this->window); 
+    }
+    for (auto& enemy : specialenemies) {
+        enemy->draw(window); 
     }
     window->draw(healthbar); 
     window->draw(text); 
@@ -269,6 +274,17 @@ void Game::initPoweupEntities()
 {
     this->spawnTimerMaxHP = 50.f;
     this->spawnTimerHP = this->spawnTimerMaxHP;
+}
+
+void Game::initspecialenemy()
+{
+    specialenemies.push_back(std::make_unique<BossEnemy>()); // making the new pointer of the boss enemy and pushing that shit to vector
+
+    specialenemies.push_back(std::make_unique<LethalEnemy>()); //same we do for lethal enemy both of them goes to the same vector of specialenemy pointer
+         /*
+     vector fucking don't know what is happening and can't diffrentiate anything, the special enemy pointer is knowing the stuffs on the basis of pointer this shit is called 
+     runtime polymorphism
+    */ 
 }
 
 void Game::deletingenemies() {
@@ -428,6 +444,11 @@ void Game::increaseHp(float number) {
     healthbar.setSize(sf::Vector2f(newhp.x, newhp.y));
 }
 
+void Game::updatespecialenemy() {
+    for (auto& enemyptr : specialenemies) {
+        enemyptr->update();
+    }
+  }
 
 
 

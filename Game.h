@@ -6,8 +6,12 @@
 #include "Enemy.h"
 #include"EnemyBullet.h"
 #include "Powerup.h"
+#include"SpecialEnemy.h"
+#include"BossEnemy.h"
+#include"LethalEnemy.h"
 #include <cstdlib> 
 #include <ctime>   
+#include<memory>
 class Game {
 private:
     sf::Vector2f newhp; 
@@ -26,8 +30,10 @@ private:
     std::vector<Enemy*> enemies; 
     std::vector<EnemyBullet*> Enemybullets;
     std::vector<Powerup*> Powerupvector;
+    std::vector<std::unique_ptr<SpecialEnemy>>specialenemies; 
     sf::Font font; 
     sf::Text text; 
+
     int score; 
     float spawnTimer;
     float spawnTimerMax;
@@ -56,6 +62,7 @@ private:
 
     void DecreaseHp(float);
     void increaseHp(float);
+    void initspecialenemy(); 
 
 public:
     Game();
@@ -63,7 +70,7 @@ public:
 
     const bool running() const;
     void pollEvents();
-    void update();
+    void Update();
     void render();
     void spawnBullets();
     void spawnEnemiesBullet();
@@ -78,5 +85,6 @@ public:
     void RemoveBullets();
     void SpawnAndDeletePowerup(); 
     void makePowerupTouchPlayer();
+    void updatespecialenemy();
 
 };

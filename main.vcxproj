@@ -133,22 +133,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="LethalEnemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Powerup.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="LethalEnemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Powerup.h" />
+    <ClInclude Include="SpecialEnemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

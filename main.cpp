@@ -4,7 +4,7 @@ int main() {
     Game game;
     while (game.running()) {
         game.pollEvents(); 
-        game.update();
+        game.Update();
         game.render();
     }
     return 0;
