@@ -138,6 +138,7 @@
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Powerup.cpp" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Powerup.h" />
   </ItemGroup>

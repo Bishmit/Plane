@@ -6,8 +6,10 @@
 #include "Enemy.h"
 #include"EnemyBullet.h"
 #include "Powerup.h"
+#include "ParticleSystem.h"
 #include <cstdlib> 
-#include <ctime>   
+#include <ctime>  
+#include<memory>
 class Game {
 private:
     sf::Vector2f newhp; 
@@ -26,9 +28,10 @@ private:
     std::vector<Enemy*> enemies; 
     std::vector<EnemyBullet*> Enemybullets;
     std::vector<Powerup*> Powerupvector;
+    std::vector<std::unique_ptr<ParticleSystem>> particle; 
     sf::Font font; 
     sf::Text text; 
-    int score; 
+    int score;
     float spawnTimer;
     float spawnTimerMax;
 
@@ -56,7 +59,8 @@ private:
 
     void DecreaseHp(float);
     void increaseHp(float);
-
+    void makePostCollisonEffect(int , int ); 
+    void deleteCollisoneffectOnceDone();
 public:
     Game();
     ~Game();

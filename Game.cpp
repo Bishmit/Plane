@@ -144,10 +144,15 @@ void Game::update() {
     updateEnemyBullets(); 
     deletingenemies(); 
     RemoveBullets(); 
+    deleteCollisoneffectOnceDone(); 
     SpawnAndDeletePowerup(); 
     makeEnemyTouchPlayer(); 
     makeEnemyBulletTouchPlayer(); 
     makePowerupTouchPlayer(); 
+
+    for (auto& i : particle) {
+        i->update(); 
+    }
 }
 
 void Game::render() {
@@ -169,6 +174,10 @@ void Game::render() {
     // redering the powerup in the screen
     for (auto* hpbarshit : this->Powerupvector) {
         hpbarshit->render(this->window); 
+    }
+
+    for (auto& particle_ : particle) {
+        particle_->render(this->window); 
     }
     window->draw(healthbar); 
     window->draw(text); 
@@ -306,6 +315,7 @@ void Game::RemoveBullets() {
         for (int j = 0; j < bullets.size(); j++) {
             if (enemies[i]->getBounds().intersects(bullets[j]->getBounds())) {
                 // If there's an intersection, remove both the bullet and the enemy
+                makePostCollisonEffect(i,j);
                 this->score++; 
                 std::cout << score << "\n"; 
                 text.setString("Score: " + std::to_string(this->score));
@@ -340,7 +350,7 @@ void Game::SpawnAndDeletePowerup() {
             delete this->Powerupvector[index];
             this->Powerupvector.erase(this->Powerupvector.begin() + index);
             --index;
-            std::cout << "chalexa" << "\n";
+           // std::cout << "chalexa" << "\n";
         }
         ++index;
     }
@@ -426,6 +436,27 @@ void Game::increaseHp(float number) {
         newhp.x = 150.0f;
     }
     healthbar.setSize(sf::Vector2f(newhp.x, newhp.y));
+}
+
+void Game::makePostCollisonEffect(int i, int j) {
+        std::unique_ptr<ParticleSystem> newParticle = std::make_unique<ParticleSystem>(
+            0.f,
+            0.f,
+            0.f
+        );
+        newParticle->setPosition(sf::Vector2f(enemies[i]->getPos().x, enemies[i]->getPos().y)); 
+        particle.push_back(std::move(newParticle));
+       // std::cout << enemies[i]->getPos().x << " " << enemies[i]->getPos().y << "\n";
+
+        // Reset the clock to restart the timer
+}
+
+
+void Game::deleteCollisoneffectOnceDone() {
+    auto it = std::remove_if(particle.begin(), particle.end(), [&](const std::unique_ptr<ParticleSystem>& p) {
+        return p->getbounds().left < -50.f;
+        }); 
+    particle.erase(it, particle.end()); 
 }
 
 
