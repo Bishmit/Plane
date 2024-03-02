@@ -36,7 +36,14 @@
     <ClCompile Include="Powerup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ParticleSystem.cpp">
+=======
+    <ClCompile Include="BossEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LethalEnemy.cpp">
+>>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +69,17 @@
     <ClInclude Include="Powerup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ParticleSystem.h">
+=======
+    <ClInclude Include="SpecialEnemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BossEnemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LethalEnemy.h">
+>>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

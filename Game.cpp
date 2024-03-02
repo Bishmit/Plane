@@ -11,6 +11,7 @@ Game::Game() {
     inithealthbarentities();
     initfont(); 
     makeHealthBar(); 
+    initspecialenemy();
 }
 
 Game::~Game() {
@@ -136,7 +137,7 @@ void Game::pollEvents() {
     }
 }
 
-void Game::update() {
+void Game::Update() {
     player.update(this->window);
     spawnBullets();
     updateBullets();
@@ -149,10 +150,14 @@ void Game::update() {
     makeEnemyTouchPlayer(); 
     makeEnemyBulletTouchPlayer(); 
     makePowerupTouchPlayer(); 
+<<<<<<< HEAD
 
     for (auto& i : particle) {
         i->update(); 
     }
+=======
+    updatespecialenemy(); 
+>>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
 }
 
 void Game::render() {
@@ -175,9 +180,14 @@ void Game::render() {
     for (auto* hpbarshit : this->Powerupvector) {
         hpbarshit->render(this->window); 
     }
+<<<<<<< HEAD
 
     for (auto& particle_ : particle) {
         particle_->render(this->window); 
+=======
+    for (auto& enemy : specialenemies) {
+        enemy->draw(window); 
+>>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
     }
     window->draw(healthbar); 
     window->draw(text); 
@@ -278,6 +288,17 @@ void Game::initPoweupEntities()
 {
     this->spawnTimerMaxHP = 50.f;
     this->spawnTimerHP = this->spawnTimerMaxHP;
+}
+
+void Game::initspecialenemy()
+{
+    specialenemies.push_back(std::make_unique<BossEnemy>()); // making the new pointer of the boss enemy and pushing that shit to vector
+
+    specialenemies.push_back(std::make_unique<LethalEnemy>()); //same we do for lethal enemy both of them goes to the same vector of specialenemy pointer
+         /*
+     vector fucking don't know what is happening and can't diffrentiate anything, the special enemy pointer is knowing the stuffs on the basis of pointer this shit is called 
+     runtime polymorphism
+    */ 
 }
 
 void Game::deletingenemies() {
@@ -438,6 +459,7 @@ void Game::increaseHp(float number) {
     healthbar.setSize(sf::Vector2f(newhp.x, newhp.y));
 }
 
+<<<<<<< HEAD
 void Game::makePostCollisonEffect(int i, int j) {
         std::unique_ptr<ParticleSystem> newParticle = std::make_unique<ParticleSystem>(
             0.f,
@@ -459,6 +481,13 @@ void Game::deleteCollisoneffectOnceDone() {
     particle.erase(it, particle.end()); 
 }
 
+=======
+void Game::updatespecialenemy() {
+    for (auto& enemyptr : specialenemies) {
+        enemyptr->update();
+    }
+  }
+>>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
 
 
 
