@@ -6,17 +6,14 @@
 #include "Enemy.h"
 #include"EnemyBullet.h"
 #include "Powerup.h"
-<<<<<<< HEAD
 #include "ParticleSystem.h"
 #include <cstdlib> 
 #include <ctime>  
-=======
 #include"SpecialEnemy.h"
 #include"BossEnemy.h"
 #include"LethalEnemy.h"
 #include <cstdlib> 
 #include <ctime>   
->>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
 #include<memory>
 class Game {
 private:
@@ -36,18 +33,15 @@ private:
     std::vector<Enemy*> enemies; 
     std::vector<EnemyBullet*> Enemybullets;
     std::vector<Powerup*> Powerupvector;
-<<<<<<< HEAD
     std::vector<std::unique_ptr<ParticleSystem>> particle; 
     sf::Font font; 
     sf::Text text; 
     int score;
-=======
     std::vector<std::unique_ptr<SpecialEnemy>>specialenemies; 
     sf::Font font; 
     sf::Text text; 
 
     int score; 
->>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
     float spawnTimer;
     float spawnTimerMax;
 
@@ -75,13 +69,10 @@ private:
 
     void DecreaseHp(float);
     void increaseHp(float);
-<<<<<<< HEAD
     void makePostCollisonEffect(int , int ); 
     void deleteCollisoneffectOnceDone();
-=======
     void initspecialenemy(); 
 
->>>>>>> 50a6c30215de7676c9c5d859c2d1a4dd1ad1aa10
 public:
     Game();
     ~Game();
