@@ -1,0 +1,3 @@
+/home/bishmitregmi/Documents/Plane/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate.dir
+/home/bishmitregmi/Documents/Plane/build/_deps/sfml-subbuild/CMakeFiles/edit_cache.dir
+/home/bishmitregmi/Documents/Plane/build/_deps/sfml-subbuild/CMakeFiles/rebuild_cache.dir
