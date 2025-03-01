@@ -66,7 +66,7 @@ void Game::initVariable() {
 void Game::initWindow() {
     videomode = sf::VideoMode(800, 800);
     window = new sf::RenderWindow(videomode, "Plane", sf::Style::Close | sf::Style::Titlebar);
-    if (!backgroundtexture.loadFromFile("Space.png")) {
+    if (!backgroundtexture.loadFromFile("../resources/images/Space.jpg")) {
         std::cerr << "Failed to load spcace.png" << std::endl;
     } else {
         std::cout << "Loaded Bullet.png successfully" << std::endl;
