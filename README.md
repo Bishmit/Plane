@@ -69,4 +69,9 @@ Notes
     - If using macOS, ensure SFML is correctly linked via Homebrew.
 
 
+**Game looks like this right now:** 
+
+![Screenshot](resources/ScreenShots/Plane.png) 
+
+
 
