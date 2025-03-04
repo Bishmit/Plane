@@ -3,7 +3,7 @@
 ParticleSystem::ParticleSystem(float vel_x, float vel_y, float movement)
     : velocity(vel_x, vel_y), movement(movement)
 {
-    if (!texture.loadFromFile("Particle/particle01.png")) {
+    if (!texture.loadFromFile("../resources/images/particle01.png")) {
         // Handle error if texture loading fails
     }
     sprite.setTexture(texture);

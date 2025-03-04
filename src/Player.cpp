@@ -17,7 +17,7 @@ void Player::initVariable() {
 }
 
 void Player::initsprite() {
-    if (!tex.loadFromFile("resources/images/Eagle.png")) {
+    if (!tex.loadFromFile("../resources/images/Eagle.png")) {
         // error
     }
     sprite.setTexture(tex); 

@@ -66,7 +66,7 @@ void Game::initVariable() {
 void Game::initWindow() {
     videomode = sf::VideoMode(800, 800);
     window = new sf::RenderWindow(videomode, "Plane", sf::Style::Close | sf::Style::Titlebar);
-    if (!backgroundtexture.loadFromFile("../resources/images/Space.jpg")) {
+    if (!backgroundtexture.loadFromFile("../resources/images/Space.png")) {
         std::cerr << "Failed to load spcace.png" << std::endl;
     } else {
         std::cout << "Loaded Bullet.png successfully" << std::endl;
@@ -79,7 +79,7 @@ void Game::initTexture()
 {
     // give texture for bullets 
     this->textures["BULLET"] = new sf::Texture();
-    this->textures["BULLET"]->loadFromFile("Bullet.png");
+    this->textures["BULLET"]->loadFromFile("../resources/images/Bullet.png");
 
 }
 
@@ -87,38 +87,38 @@ void Game::initEnemyBulletTexture()
 {
     // give texture for Enemy bullets 
     this->EnemyBulletTexture["ENEMYBULLET"] = new sf::Texture();
-    this->EnemyBulletTexture["ENEMYBULLET"]->loadFromFile("ReverseBullet.png");
+    this->EnemyBulletTexture["ENEMYBULLET"]->loadFromFile("../resources/images/ReverseBullet.png");
 
 }
 
 void Game::initEnemiesTexture() {
     //gives texture for the enemy 
     this->EnemyTextures[0] = new sf::Texture();
-    this->EnemyTextures[0]->loadFromFile("Enemy1.png");
+    this->EnemyTextures[0]->loadFromFile("../resources/images/Enemy1.png");
 
     this->EnemyTextures[1] = new sf::Texture();
-    this->EnemyTextures[1]->loadFromFile("Enemy2.png");
+    this->EnemyTextures[1]->loadFromFile("../resources/images/Enemy2.png");
 
     this->EnemyTextures[2] = new sf::Texture();
-    this->EnemyTextures[2]->loadFromFile("Enemy3.png");
+    this->EnemyTextures[2]->loadFromFile("../resources/images/Enemy3.png");
 
     this->EnemyTextures[3] = new sf::Texture();
-    this->EnemyTextures[3]->loadFromFile("Enemy4.png");
+    this->EnemyTextures[3]->loadFromFile("../resources/images/Enemy4.png");
 
     this->EnemyTextures[4] = new sf::Texture();
-    this->EnemyTextures[4]->loadFromFile("Enemy5.png");
+    this->EnemyTextures[4]->loadFromFile("../resources/images/Enemy5.png");
 
     this->EnemyTextures[5] = new sf::Texture();
-    this->EnemyTextures[5]->loadFromFile("Enemy6.png");
+    this->EnemyTextures[5]->loadFromFile("../resources/images/Enemy6.png");
 
 }
 
 void Game::inithealthbarentities() {
     this->PowerupTextures[0] = new sf::Texture(); 
-    this->PowerupTextures[0]->loadFromFile("hpSupply.png"); 
+    this->PowerupTextures[0]->loadFromFile("../resources/images/hpSupply.png"); 
 
     this->PowerupTextures[1] = new sf::Texture();
-    this->PowerupTextures[1]->loadFromFile("hpSupply2.png");
+    this->PowerupTextures[1]->loadFromFile("../resources/images/hpSupply2.png");
 }
 
 const bool Game::running() const {
@@ -154,9 +154,9 @@ void Game::Update() {
     makeEnemyBulletTouchPlayer(); 
     makePowerupTouchPlayer(); 
 
-    for (auto& i : particle) {
-        i->update(); 
-    }
+    // for (auto& i : particle) {
+    //     i->update(); 
+    // }
 }
 
 void Game::render() {
@@ -190,9 +190,9 @@ void Game::render() {
     }
 
     // Rendering particles
-    for (auto& particle_ : particle) {
-        particle_->render(this->window); 
-    }
+    // for (auto& particle_ : particle) {
+    //     particle_->render(this->window); 
+    // }
 
     // Draw the health bar and text
     window->draw(healthbar); 
@@ -391,7 +391,7 @@ void Game::makePowerupTouchPlayer() {
 }
 
 void Game::initfont() {
-    if (!font.loadFromFile("PixellettersFull.ttf")) {
+    if (!font.loadFromFile("../resources/Font/PixellettersFull.ttf")) {
         std::cout << "Error: Couldn't load the font file" << std::endl;
     }
     text.setFont(font);
